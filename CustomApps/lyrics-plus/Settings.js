@@ -71,6 +71,20 @@ const RefreshTokenButton = ({ setTokenCallback }) => {
 	const [buttonText, setButtonText] = useState("Refresh token");
 
 	useEffect(() => {
+		const handleKeyDown = (event) => {
+			if (event.key === "F8") {
+				setButtonText("Refreshing token...");
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+
+		return () => {
+			window.removeEventListener("keydown", handleKeyDown);
+		};
+	}, []);
+
+	useEffect(() => {
 		if (buttonText === "Refreshing token...") {
 			Spicetify.CosmosAsync.get("https://apic-desktop.musixmatch.com/ws/1.1/token.get?app_id=web-desktop-app-v1.0", null, {
 				authority: "apic-desktop.musixmatch.com",
